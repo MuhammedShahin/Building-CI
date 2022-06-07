@@ -49,7 +49,7 @@ jobs:
 workflows:
   say-hello-workflow:
     jobs:
-      - save_hello_world:
+      - save_hello_world
       - print_output_file:
           requires:
             - save_hello_world
