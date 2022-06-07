@@ -27,7 +27,8 @@ jobs:
             echo $AUTH_NAME
   
   save_hello_world:
-    docker: circleci/node:13.8.0
+    docker: 
+      -image: circleci/node:13.8.0
     steps:
       - run: echo "Hello World!" > ~/output.txt
       - persist_to_workspace:
