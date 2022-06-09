@@ -2,6 +2,15 @@
 # See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
 
+commands:
+  print_pieline_id:
+    parameters:
+      env_name:
+        type: string
+        default: "default value"
+    steps:
+      - run: echo << parameters.env_name >>
+
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
@@ -44,12 +53,20 @@ jobs:
           at: ~/
       - run: cat ~/output.txt
 
+  try_command:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - print_pieline_id:
+          env_name: $CIRCLE_WORKFLOW_ID
+
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
   say-hello-workflow:
     jobs:
-      - save_hello_world
-      - print_output_file:
-          requires:
-            - save_hello_world
+      - try_command:
+      # - save_hello_world
+      # - print_output_file:
+      #     requires:
+      #       - save_hello_world
