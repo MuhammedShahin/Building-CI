@@ -11,7 +11,25 @@ jobs:
           name: Craete Cloudformation Stack
           command: |
             aws cloudformation deploy --template-file template.yml --stack-name myStack-${CIRCLE_WORKFLOW_ID:0:5} --region us-west-2
+
+  configure_infrastructure:
+    docker:
+      - image: python:3.7-alpine3.11
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints: ["ce:d2:da:7e:d7:19:cd:c8:d5:9d:dd:75:78:dc:a6:2a"]
+      - run:
+          name: Install Ansible
+          command: |
+            apk add --update ansible
+      - run:
+          name: Run Playbook and Configure server
+          command: |
+            ansible-playbook -i inventory.txt main.yml
+
 workflows:
   my_workflow:
     jobs:
-      - create_infrastructure
+      # - create_infrastructure
+      - configure_infrastructure
