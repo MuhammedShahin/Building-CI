@@ -69,7 +69,7 @@ jobs:
           name: Fetch and save the old pipline ID {bucket name} responsible for tha last release.
           command: |
             aws cloudformation \
-            list-exports --query "Exports[?Name==\`PiplineID\`].Value" \
+            list-exports --query "Exports[?Name==\`PipelineID\`].Value" \
             --no-paginate --output text > ~/textfile.txt
       - persist_to_workspace:
           root: ~/
@@ -87,7 +87,7 @@ jobs:
             aws cloudformation deploy \
             --template-file cloudfront.yml \
             --stack-name production-distro \
-            --parameter-overrides PiplineID="mybucket-${CIRCLE_WORKFLOW_ID:0:7}"
+            --parameter-overrides PipelineID="mybucket-${CIRCLE_WORKFLOW_ID:0:7}"
 
   clean_up_old_front_end:
     docker:
